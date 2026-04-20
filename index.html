@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Audio Player</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: white;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .player {
+            background: #ADD8E6;
+            padding: 20px;
+            width: 300px;
+            margin: auto;
+            border-radius: 10px;
+           
+        }
+
+        button {
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            background-color: green;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: green;
+        }
+
+        input[type="range"] {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="player">
+    <h2> My Simple Audio Player</h2>
+
+    <audio id="song" src="audio.mp3"></audio>
+
+
+    <button onclick="playSong()">▶ Play</button>
+    <button onclick="pauseSong()">⏸ Pause</button>
+
+
+    <button onclick="toggleMute()"> Mute</button>
+
+    <br><br>
+
+   
+    <input type="range" id="progress" value="0">
+
+    <br><br>
+
+    <label>Volume</label>
+    <input type="range" min="0" max="1" step="0.1" onchange="setVolume(this.value)">
+
+    <br><br>
+
+    <!-- Time -->
+    <p id="time">0 seconds</p>
+</div>
+
+<script>
+    const song = document.getElementById("song");
+    const timeText = document.getElementById("time");
+    const progress = document.getElementById("progress");
+
+    function playSong() {
+        song.play();
+    }
+
+    function pauseSong() {
+        song.pause();
+    }
+
+    function setVolume(value) {
+        song.volume = value;
+    }
+
+    
+    function toggleMute() {
+        song.muted = !song.muted;
+    }
+
+   
+    song.addEventListener("timeupdate", function() {
+        let current = song.currentTime;
+        let duration = song.duration;
+
+        progress.value = (current / duration) * 100;
+
+        let seconds = Math.floor(current);
+        timeText.textContent = seconds + " seconds";
+    });
+
+
+    progress.addEventListener("input", function() {
+        let duration = song.duration;
+        song.currentTime = (progress.value / 100) * duration;
+    });
+</script>
+
+</body>
+</html>
